@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcDottyLogs";
+
+package dottylogs;
+
+// The greeting service definition.
+service DottyLogs {
+  // Starts a request span (or adds to existing one, if we know tracingIdentifier)
+  rpc StartSpan (StartSpanRequest) returns (StartSpanResponse);
+}
+
+message StartSpanRequest {
+  string tracingIdentifier = 1;
+  string requestUpdateStatus = 2;
+  string threadId = 3;
+  string requestUrl = 4;
+}
+
+message StartSpanResponse {
+  string message = 1;
+}
