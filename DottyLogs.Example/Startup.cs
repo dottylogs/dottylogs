@@ -24,7 +24,7 @@ namespace DottyLogs.Example
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-
+            services.AddControllers();
             services.AddDottyRequestTracing();
         }
 
@@ -49,8 +49,11 @@ namespace DottyLogs.Example
 
             app.UseAuthorization();
 
+            app.UseDottyLogs();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
         }

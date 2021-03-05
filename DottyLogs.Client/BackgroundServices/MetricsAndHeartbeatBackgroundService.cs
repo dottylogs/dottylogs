@@ -24,6 +24,7 @@ namespace DottyLogs.Client.BackgroundServices
         private Timer _timer;
         private GrpcChannel _channel;
         private AsyncClientStreamingCall<MetricsUpdateRequest, Empty> _metricsUpdateChannel;
+        private bool disposedValue;
 
         public MetricsAndHeartbeatBackgroundService(ILogger<MetricsAndHeartbeatBackgroundService> logger)
         {
@@ -72,13 +73,28 @@ namespace DottyLogs.Client.BackgroundServices
             return Task.CompletedTask;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _timer?.Dispose();
+                    _metricsUpdateChannel?.RequestStream.CompleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    _metricsUpdateChannel?.Dispose();
+                    _channel.ShutdownAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    _channel.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
         public void Dispose()
         {
-            _timer?.Dispose();
-            _metricsUpdateChannel?.RequestStream.CompleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            _metricsUpdateChannel?.Dispose();
-            _channel.ShutdownAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            _channel.Dispose();
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 
