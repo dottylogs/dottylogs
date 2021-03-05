@@ -25,5 +25,15 @@ namespace DottyLogs.Server.Services
                 Message = "Processed"
             };
         }
+
+        public override async Task<Empty> MetricsUpdate(IAsyncStreamReader<MetricsUpdateRequest> requestStream, ServerCallContext context)
+        {
+            await foreach (var message in requestStream.ReadAllAsync())
+            {
+                _logger.LogInformation("Got metrics update");
+            }
+            
+            return new Empty();
+        }
     }
 }

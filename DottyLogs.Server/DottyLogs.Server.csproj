@@ -6,16 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\dottylogs.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.15.3" />
+    <Protobuf Include="..\Proto\dottylogs.proto" GrpcServices="Server" Link="Protos\dottylogs.proto" />
+    
+    <PackageReference Include="Google.Protobuf" Version="3.15.5" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.35.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Protobuf Include="Protos\dottylogs.proto" />
   </ItemGroup>
 
 </Project>

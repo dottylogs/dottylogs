@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "GrpcDottyLogsClient";
+option csharp_namespace = "GrpcDottyLogs";
 
 package dottylogs;
 
@@ -8,7 +8,12 @@ package dottylogs;
 service DottyLogs {
   // Starts a request span (or adds to existing one, if we know tracingIdentifier)
   rpc StartSpan (StartSpanRequest) returns (StartSpanResponse);
+
+  // Streams heartbeats and metrics
+  rpc MetricsUpdate (stream MetricsUpdateRequest) returns (Empty);
 }
+
+message Empty {}
 
 message StartSpanRequest {
   string tracingIdentifier = 1;
@@ -19,4 +24,9 @@ message StartSpanRequest {
 
 message StartSpanResponse {
   string message = 1;
+}
+
+message MetricsUpdateRequest {
+	float memory = 1;
+	float cpu = 2;
 }
