@@ -519,28 +519,28 @@
           <ul
             class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 xl:grid-cols-4 mt-3"
           >
-            <li class="relative col-span-1 flex shadow-sm rounded-md">
-              <div
-                class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md"
-              >
-                1
-              </div>
-              <div
-                class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate"
-              >
-                <div class="flex-1 px-4 py-2 text-sm truncate">
-                  <a
-                    href="#"
-                    class="text-gray-900 font-medium hover:text-gray-600"
-                  >
-                    Number 1
-                  </a>
-                  <p class="text-gray-500">8 requests</p>
+            <transition-group name="server-list">
+              <li v-for="server in servers" v-bind:key="server.tracingIdentifier" class="relative col-span-1 flex shadow-sm rounded-md server-list-item">
+                <div
+                  class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md"
+                >
+                  1
                 </div>
-              </div>
-            </li>
-
-            <!-- More items... -->
+                <div
+                  class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate"
+                >
+                  <div class="flex-1 px-4 py-2 text-sm truncate">
+                    <a
+                      href="#"
+                      class="text-gray-900 font-medium hover:text-gray-600"
+                    >
+                      {{ server.name }}
+                    </a>
+                    <p class="text-gray-500">{{ server.tracingIdentifier }}|{{ server.hostName}}</p>
+                  </div>
+                </div>
+              </li>
+            </transition-group>
           </ul>
         </div>
 
@@ -606,79 +606,12 @@
                     <span class="lg:pl-2">URL</span>
                   </th>
                   <th
-                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Members
-                  </th>
-                  <th
-                    class="hidden md:table-cell px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Last updated
-                  </th>
-                  <th
                     class="pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
                   ></th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-100">
-                <tr v-for="request in requests" v-bind:key="request.tracingIdentifier">
-                  <td
-                    class="px-6 py-3 max-w-0 w-full whitespace-nowrap text-sm font-medium text-gray-900"
-                  >
-                    <div class="flex items-center space-x-3 lg:pl-2">
-                      <div
-                        class="flex-shrink-0 w-2.5 h-2.5 rounded-full bg-pink-600"
-                        aria-hidden="true"
-                      ></div>
-                      <a href="#" class="truncate hover:text-gray-600">
-                        <span>
-                          {{ request.requestUrl }}
-                          <span class="text-gray-500 font-normal"
-                            >in Engineering</span
-                          >
-                        </span>
-                      </a>
-                    </div>
-                  </td>
-                  <td class="px-6 py-3 text-sm text-gray-500 font-medium">
-                    <div class="flex items-center space-x-2">
-                      <div class="flex flex-shrink-0 -space-x-1">
-                        <img
-                          class="max-w-none h-6 w-6 rounded-full ring-2 ring-white"
-                          src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixqx=PbYQhi5uSS&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
-                        />
-
-                        <img
-                          class="max-w-none h-6 w-6 rounded-full ring-2 ring-white"
-                          src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixqx=PbYQhi5uSS&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
-                        />
-
-                        <img
-                          class="max-w-none h-6 w-6 rounded-full ring-2 ring-white"
-                          src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixqx=PbYQhi5uSS&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
-                        />
-
-                        <img
-                          class="max-w-none h-6 w-6 rounded-full ring-2 ring-white"
-                          src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixqx=PbYQhi5uSS&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
-                        />
-                      </div>
-
-                      <span class="flex-shrink-0 text-xs leading-5 font-medium"
-                        >+8</span
-                      >
-                    </div>
-                  </td>
-                  <td
-                    class="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right"
-                  >
-                    March 17, 2020
-                  </td>
-                </tr>
+                <TraceRow v-for="trace in traces" v-bind:key="trace.tracingIdentifier" :trace="trace" />
 
                 <!-- More items... -->
               </tbody>
@@ -694,24 +627,33 @@
 import { ref, defineComponent } from "vue";
 import * as signalR from "@microsoft/signalr";
 import StartSpan from "../models/startspan";
-import DottyRequest from "../models/dottyrequest";
+import Span from "../models/span";
+import Trace from "../models/trace";
+import Server from "../models/server";
+import ServerConnectedEvent from "../models/serverconnectedevent";
+import ServerDisconnectedEvent from "../models/serverdisconnectedevent";
+
+import LogMessage from "../models/logmessage";
+import TraceRow from "../components/TraceRow.vue";
+import { debug } from "node:console";
 
 interface MainAppData {
-  requests: DottyRequest[]
+  traces: Trace[];
+  spanLookup: {[spanId: string]:Span};
+  servers: Server[]
 }
 
 export default defineComponent({
   name: "Index",
   props: {
-    msg: {
-      type: String,
-      required: true,
-    },
+
   },
   data: () => {
     return {
-      requests: [] as DottyRequest[]
-    }
+      traces: [] as Trace[],
+      spanLookup: {} as {[spanId: string]:Span},
+      servers: [] as Server[],
+    } as MainAppData
   },
   setup: () => {
     const count = ref(0);
@@ -719,19 +661,106 @@ export default defineComponent({
   },
   mounted() {
     const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/ui-updates")
-    .build();
+      .withUrl("/ui-updates")
+      .build();
 
-    let vm = this;
-    connection.on("RequestLifecycle", (message: StartSpan) => {
-      console.info(message)
-      vm.requests.unshift(new DottyRequest(message.requestUrl, message.tracingIdentifier));
+    connection.on("StartSpan", (message: StartSpan) => {
+      // See if we have a trace already
+      const trace = this.traces.find(s => s.tracingIdentifier == message.tracingIdentifier)
+      const newSpan = new Span(message.spanIdentifier, message.requestUrl, message.tracingIdentifier, message.hostname, message.applicationName);
+
+      this.spanLookup[message.spanIdentifier] = newSpan;
+      if (trace) {
+        // We already have a trace, so just add the span beneath the current parent one.
+        const parentSpan = this.spanLookup[message.parentSpanIdentifier];
+
+        parentSpan.childSpans.push(newSpan);
+
+      } else {
+
+        const newTrace = new Trace(newSpan, message.requestUrl, message.tracingIdentifier);
+        this.traces.unshift(newTrace);
+      }
+    });
+
+    connection.on("StopSpan", (message: StartSpan) => {
+      let span = this.spanLookup[message.spanIdentifier];
+      span.inProgress = false;
+    });
+
+    connection.on("LogMessage", (message: LogMessage) => {
+      let span = this.spanLookup[message.spanIdentifier];
+      span.logs.push(message);
+    });
+
+    connection.on("ServerConnected", (message: ServerConnectedEvent) => {
+      let existingServer = this.servers.find(s => s.traceIdentifier === message.traceIdentifier);
+      if (!existingServer) {
+        this.servers.push(new Server(message.traceIdentifier, message.hostName, message.applicationName))
+      }
+    });
+
+    connection.on("ServerDisconnected", (message: ServerDisconnectedEvent) => {
+      console.info("disconnecting")
+      console.log({message, s: this.servers});
+      this.servers.forEach((server, index) => {
+        if (server.tracingIdentifier == message.traceIdentifier) {
+          this.servers.splice(index, 1)
+        }
+      });
     });
 
     connection.start().catch(err => document.write(err));
+  },
+  components: {
+    'TraceRow': TraceRow
   }
 });
 </script>
 
-<style scoped>
+<style>
+.console {
+  background: rgba(56, 4, 40, 0.7);
+  color: white;
+  font: Inconsolata, monospace;
+}
+
+.blinker {  
+  height: 1em;
+  display: block;
+  width: 0.6em;
+  margin-bottom: 4px;
+  animation: blinky 1200ms linear infinite;
+} 
+@keyframes blinky {  
+  0% {    
+    background: #ffffff;  
+  }  
+  49% {    
+    background: #ffffff;  
+  }  
+  60% {    
+    background: transparent;  
+  }  
+  99% {    
+    background: transparent;  
+  }  100% {    
+    background: #ffffff;  
+  }
+} 
+
+.server-list-item {
+  transition: all 0.8s ease;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.server-list-enter-from,
+.server-list-leave-to {
+  opacity: 0;
+}
+
+.server-list-leave-active {
+  position: absolute;
+}
 </style>

@@ -3,6 +3,7 @@
 option csharp_namespace = "GrpcDottyLogs";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 
 package dottylogs;
 
@@ -16,7 +17,10 @@ service DottyLogs {
   // Add log message to span
   rpc PushLogMessage (LogRequest) returns (Empty);
 
-  // Streams heartbeats and metrics
+  // Keep a connection alive, so that we know what is connected to us
+  rpc Heartbeat (stream HeartbeatRequest) returns (Empty);
+
+  // Streams metrics
   rpc MetricsUpdate (stream MetricsUpdateRequest) returns (Empty);
 }
 
@@ -28,6 +32,9 @@ message StartSpanRequest {
   int32 threadId = 3;
   string requestUrl = 4;
   google.protobuf.Timestamp timestamp = 5;
+  google.protobuf.StringValue parentSpanIdentifier = 6;
+  string hostname = 7;
+  string applicationName = 8;
 }
 
 message StopSpanRequest {
@@ -35,6 +42,11 @@ message StopSpanRequest {
   string spanIdentifier = 2;
   bool wasSuccess = 3;
   google.protobuf.Timestamp timestamp = 4;
+}
+
+message HeartbeatRequest {
+	string hostname = 1;
+	string applicationName = 2;
 }
 
 message LogRequest {

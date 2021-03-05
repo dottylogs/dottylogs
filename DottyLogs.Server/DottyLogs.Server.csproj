@@ -12,4 +12,8 @@
     <PackageReference Include="Grpc.AspNetCore" Version="2.35.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DottyLogs.Models\DottyLogs.Models.csproj" />
+  </ItemGroup>
+
 </Project>

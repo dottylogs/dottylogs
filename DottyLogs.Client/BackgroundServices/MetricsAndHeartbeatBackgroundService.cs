@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +26,7 @@ namespace DottyLogs.Client.BackgroundServices
         private Timer _timer;
         private GrpcChannel _channel;
         private AsyncClientStreamingCall<MetricsUpdateRequest, Empty> _metricsUpdateChannel;
+        private AsyncClientStreamingCall<HeartbeatRequest, Empty> _heatbeatChannel;
         private bool disposedValue;
 
         public MetricsAndHeartbeatBackgroundService(ILogger<MetricsAndHeartbeatBackgroundService> logger)
@@ -37,7 +40,7 @@ namespace DottyLogs.Client.BackgroundServices
             _memory = memory;
         }
 
-        public Task StartAsync(CancellationToken stoppingToken)
+        public async Task StartAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Timed Hosted Service running.");
 
@@ -45,11 +48,12 @@ namespace DottyLogs.Client.BackgroundServices
             var client = new GrpcDottyLogs.DottyLogs.DottyLogsClient(_channel);
 
             _metricsUpdateChannel = client.MetricsUpdate(cancellationToken: stoppingToken);
+            _heatbeatChannel = client.Heartbeat(cancellationToken: stoppingToken);
+
+            await _heatbeatChannel.RequestStream.WriteAsync(new GrpcDottyLogs.HeartbeatRequest { ApplicationName = Assembly.GetEntryAssembly().GetName().Name, Hostname = Dns.GetHostName() });
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
                 TimeSpan.FromSeconds(1));
-
-            return Task.CompletedTask;
         }
 
         private void DoWork(object state)
@@ -68,6 +72,7 @@ namespace DottyLogs.Client.BackgroundServices
 
             _timer?.Change(Timeout.Infinite, 0);
             _metricsUpdateChannel?.RequestStream.CompleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            _heatbeatChannel?.RequestStream.CompleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             _channel.ShutdownAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             return Task.CompletedTask;
@@ -81,7 +86,9 @@ namespace DottyLogs.Client.BackgroundServices
                 {
                     _timer?.Dispose();
                     _metricsUpdateChannel?.RequestStream.CompleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    _heatbeatChannel?.RequestStream.CompleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                     _metricsUpdateChannel?.Dispose();
+                    _heatbeatChannel?.Dispose();
                     _channel.ShutdownAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                     _channel.Dispose();
                 }

@@ -22,6 +22,10 @@ namespace DottyLogs
 
             services.AddScoped<DottyLogsScopedContext>();
             services.AddSingleton<UpdatePusherService>();
+            services.AddScoped<DottyHeaderMessageHandler>();
+            services.AddHttpContextAccessor();
+            services.AddHttpClient(Microsoft.Extensions.Options.Options.DefaultName).AddDottyLog();
+            
             return services;
         }
 
@@ -36,6 +40,12 @@ namespace DottyLogs
             var sink = new DottyLogSink();
 
             return new DottyLogLoggerProvider(config, sink);
+        }
+
+        public static IHttpClientBuilder AddDottyLog(this IHttpClientBuilder builder)
+        {
+            builder.AddHttpMessageHandler<DottyHeaderMessageHandler>();
+            return builder;
         }
 
         //public static ILoggingBuilder AddDottyLogRequestTracer(
