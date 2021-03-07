@@ -519,27 +519,9 @@
           <ul
             class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 xl:grid-cols-4 mt-3"
           >
+          <ServerTopBox v-for="(server, ti) in serverTraceIdentifierLookup" v-bind:key="ti" v-bind:server="server"/>
             <transition-group name="server-list">
-              <li v-for="server in servers" v-bind:key="server.tracingIdentifier" class="relative col-span-1 flex shadow-sm rounded-md server-list-item">
-                <div
-                  class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md"
-                >
-                  1
-                </div>
-                <div
-                  class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate"
-                >
-                  <div class="flex-1 px-4 py-2 text-sm truncate">
-                    <a
-                      href="#"
-                      class="text-gray-900 font-medium hover:text-gray-600"
-                    >
-                      {{ server.name }}
-                    </a>
-                    <p class="text-gray-500">{{ server.tracingIdentifier }}|{{ server.hostName}}</p>
-                  </div>
-                </div>
-              </li>
+              
             </transition-group>
           </ul>
         </div>
@@ -635,12 +617,14 @@ import ServerDisconnectedEvent from "../models/serverdisconnectedevent";
 
 import LogMessage from "../models/logmessage";
 import TraceRow from "../components/TraceRow.vue";
+import ServerTopBox from "../components/ServerTopBox.vue";
 import { debug } from "node:console";
 
 interface MainAppData {
   traces: Trace[];
   spanLookup: {[spanId: string]:Span};
-  servers: Server[]
+  servers: Server[];
+  serverTraceIdentifierLookup: {[serveId: string]:Server};
 }
 
 export default defineComponent({
@@ -653,6 +637,7 @@ export default defineComponent({
       traces: [] as Trace[],
       spanLookup: {} as {[spanId: string]:Span},
       servers: [] as Server[],
+      serverTraceIdentifierLookup: {} as {[serveId: string]:Server}
     } as MainAppData
   },
   setup: () => {
@@ -696,7 +681,10 @@ export default defineComponent({
     connection.on("ServerConnected", (message: ServerConnectedEvent) => {
       let existingServer = this.servers.find(s => s.traceIdentifier === message.traceIdentifier);
       if (!existingServer) {
-        this.servers.push(new Server(message.traceIdentifier, message.hostName, message.applicationName))
+        const server = new Server(message.traceIdentifier, message.hostName, message.applicationName);
+        this.servers.push(server)
+
+        this.serverTraceIdentifierLookup[message.traceIdentifier] = server;
       }
     });
 
@@ -708,12 +696,15 @@ export default defineComponent({
           this.servers.splice(index, 1)
         }
       });
+
+      delete this.serverTraceIdentifierLookup[message.traceIdentifier];
     });
 
     connection.start().catch(err => document.write(err));
   },
   components: {
-    'TraceRow': TraceRow
+    'TraceRow': TraceRow,
+    'ServerTopBox': ServerTopBox
   }
 });
 </script>

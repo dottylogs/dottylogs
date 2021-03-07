@@ -22,15 +22,13 @@
         v-show="trace.topSpan.logs.length > 0"
         class="console mx-7 my-2 px-2 py-1 rounded"
       >
-        <transition-group name="console-animated">
           <p
-            v-for="log in threeLogEntries"
+            v-for="log in fiveLogEntries"
             v-bind:key="log.timestamp"
             class="console-item"
           >
             {{ log.message }}
           </p>
-        </transition-group>
         <span v-if="trace.topSpan.inProgress" class="blinker"></span>
       </div>
       <div v-show="trace.topSpan.childSpans.length > 0">
@@ -70,8 +68,8 @@ export default defineComponent({
     SpanBox: SpanBox,
   },
   computed: {
-    threeLogEntries(): String[] {
-      return this.trace.topSpan.logs.slice(-3);
+    fiveLogEntries(): String[] {
+      return this.trace.topSpan.logs.slice(-5);
     },
   },
 });
