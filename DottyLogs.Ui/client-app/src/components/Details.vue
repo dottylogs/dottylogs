@@ -589,9 +589,9 @@ export default defineComponent({
       if (trace.runningSpansCount == 0) {
         trace.inProgress = false;
         this.traces.forEach((trace, index) => {
-        if (trace.traceIdentifier == message.traceIdentifier) {
-          this.traces.splice(index, 1)
-        }
+        // if (trace.traceIdentifier == message.traceIdentifier) {
+        //   this.traces.splice(index, 1)
+        // }
       });
       }
     });

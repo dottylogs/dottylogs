@@ -9,8 +9,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DottyLogs.Server.Sqlite\DottyLogs.Server.Sqlite.csproj" />
     <ProjectReference Include="..\DottyLogs.Server\DottyLogs.Server.csproj" />
     <ProjectReference Include="..\DottyLogs.Ui\DottyLogs.Ui.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

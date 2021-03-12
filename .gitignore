@@ -364,3 +364,8 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp
+
+*/.tye/*
+*.db-wal
+*.db-shm
+*.db

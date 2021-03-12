@@ -1,10 +1,10 @@
 export default class Server {
-    tracingIdentifier: string;
+    traceIdentifier: string;
     hostName: string;
     name: string;
 
-    constructor(tracingIdentifier: string, hostName: string, name: string) {
-        this.tracingIdentifier = tracingIdentifier;
+    constructor(traceIdentifier: string, hostName: string, name: string) {
+        this.traceIdentifier = traceIdentifier;
         this.hostName = hostName;
         this.name = name;
     }

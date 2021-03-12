@@ -1,6 +1,7 @@
 ﻿using DottyLogs.Server.Hubs;
 using DottyLogs.Server.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DottyLogs
@@ -11,8 +12,10 @@ namespace DottyLogs
         {
             services.AddGrpc();
             services.AddSignalR();
+
             return services;
         }
+
         public static IApplicationBuilder UseDottyBackend(this IApplicationBuilder app)
         {
             app.UseEndpoints(endpoints =>

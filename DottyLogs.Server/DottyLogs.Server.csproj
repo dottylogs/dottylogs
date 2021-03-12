@@ -6,14 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <Protobuf Include="..\Proto\dottylogs.proto" GrpcServices="Server" Link="Protos\dottylogs.proto" />
     
-    <PackageReference Include="Google.Protobuf" Version="3.15.5" />
+    <PackageReference Include="Google.Protobuf" Version="3.15.6" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.35.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DottyLogs.Models\DottyLogs.Models.csproj" />
+    <ProjectReference Include="..\DottyLogs.Server.DbModels\DottyLogs.Server.DbModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>

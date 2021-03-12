@@ -2,14 +2,14 @@ import Span from "../models/span";
 
 export default class Trace {
     requestUrl: string;
-    tracingIdentifier: string;
+    traceIdentifier: string;
     topSpan: Span;
     inProgress: boolean;
     runningSpansCount: number;
 
-    constructor(topSpan: Span, requestUrl: string, tracingIdentifier: string) {
+    constructor(topSpan: Span, requestUrl: string, traceIdentifier: string) {
         this.requestUrl = requestUrl;
-        this.tracingIdentifier = tracingIdentifier;
+        this.traceIdentifier = traceIdentifier;
         this.topSpan = topSpan;
         this.inProgress = true;
         this.runningSpansCount = 1;

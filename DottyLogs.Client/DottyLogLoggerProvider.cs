@@ -8,8 +8,7 @@ namespace DottyLogs
     {
         private readonly DottyLogLoggerConfiguration _config;
         private readonly DottyLogSink _sink;
-        private readonly ConcurrentDictionary<string, DottyLogLogger> _loggers =
-            new ConcurrentDictionary<string, DottyLogLogger>();
+        private readonly ConcurrentDictionary<string, DottyLogLogger> _loggers = new();
 
         public DottyLogLoggerProvider(DottyLogLoggerConfiguration config, DottyLogSink sink)
         {

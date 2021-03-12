@@ -50,7 +50,7 @@ namespace DottyLogs.Client.Middleware
             // Tell hub we started
             var requestUpdate = new StartSpanRequest
             {
-                TracingIdentifier = context.TraceIdentifier,
+                TraceIdentifier = context.TraceIdentifier,
                 ThreadId = Thread.CurrentThread.ManagedThreadId,
                 RequestUrl = context.Request.Path.ToString(),
                 SpanIdentifier = spanIdentifier,
@@ -68,7 +68,7 @@ namespace DottyLogs.Client.Middleware
             }
             finally
             {
-                await _updatePusherService.StopSpan(new StopSpanRequest { SpanIdentifier = spanIdentifier, WasSuccess = true, TracingIdentifier = context.TraceIdentifier });
+                await _updatePusherService.StopSpan(new StopSpanRequest { SpanIdentifier = spanIdentifier, WasSuccess = true, TraceIdentifier = context.TraceIdentifier });
             }
         }
     }

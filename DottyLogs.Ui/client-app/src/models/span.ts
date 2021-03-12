@@ -1,17 +1,17 @@
 export default class Span {
     spanIdentifier: string;
     requestUrl: string;
-    tracingIdentifier: string;
+    traceIdentifier: string;
     childSpans: Span[];
     logs: string[];
     inProgress: boolean;
     hostname: string;
     applicationName: string;
 
-    constructor(spanIdentifier: string, requestUrl: string, tracingIdentifier: string, hostname: string, applicationName: string) {
+    constructor(spanIdentifier: string, requestUrl: string, traceIdentifier: string, hostname: string, applicationName: string) {
         this.spanIdentifier = spanIdentifier;
         this.requestUrl = requestUrl;
-        this.tracingIdentifier = tracingIdentifier;
+        this.traceIdentifier = traceIdentifier;
         this.childSpans = [];
         this.logs = [];
         this.inProgress = true;

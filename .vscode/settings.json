@@ -1,0 +1,23 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "Dotty",
+            "database": "${workspaceFolder:dottylogs}/DottyLogs/DottyLogs.db"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:dottylogs}/DottyLogs/DottyLogs.db",
+            "name": "Dotty"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "Dotty",
+            "database": "${workspaceFolder:dottylogs}/DottyLogs/DottyLogs.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

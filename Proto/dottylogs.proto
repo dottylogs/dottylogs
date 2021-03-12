@@ -9,7 +9,7 @@ package dottylogs;
 
 // The greeting service definition.
 service DottyLogs {
-  // Starts a request span (or adds to existing one, if we know tracingIdentifier)
+  // Starts a request span (or adds to existing one, if we know traceIdentifier)
   rpc StartSpan (StartSpanRequest) returns (Empty);
   // Stops it
   rpc StopSpan (StopSpanRequest) returns (Empty);
@@ -27,7 +27,7 @@ service DottyLogs {
 message Empty {}
 
 message StartSpanRequest {
-  string tracingIdentifier = 1;
+  string traceIdentifier = 1;
   string spanIdentifier = 2;
   int32 threadId = 3;
   string requestUrl = 4;
@@ -38,7 +38,7 @@ message StartSpanRequest {
 }
 
 message StopSpanRequest {
-  string tracingIdentifier = 1;
+  string traceIdentifier = 1;
   string spanIdentifier = 2;
   bool wasSuccess = 3;
   google.protobuf.Timestamp timestamp = 4;

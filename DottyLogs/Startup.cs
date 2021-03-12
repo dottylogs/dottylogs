@@ -20,6 +20,7 @@ namespace DottyLogs
         {
             services.AddDottyUi();
             services.AddDottyBackend();
+            services.AddDottySqliteDb();
             services.AddControllers();
         }
 

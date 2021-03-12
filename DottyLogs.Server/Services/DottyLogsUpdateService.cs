@@ -1,10 +1,13 @@
 ﻿using DottyLogs.Models;
+using DottyLogs.Server.DbModels;
 using DottyLogs.Server.Hubs;
 using Grpc.Core;
 using GrpcDottyLogs;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DottyLogs.Server.Services
@@ -13,22 +16,100 @@ namespace DottyLogs.Server.Services
     {
         private readonly ILogger<DottyLogsUpdateService> _logger;
         private readonly IHubContext<UiUpdateHub> _uiUpdateHub;
-        public DottyLogsUpdateService(ILogger<DottyLogsUpdateService> logger, IHubContext<UiUpdateHub> uiUpdateHub)
+        private readonly DottyDbContext _dbContext;
+
+        public DottyLogsUpdateService(ILogger<DottyLogsUpdateService> logger, IHubContext<UiUpdateHub> uiUpdateHub, DottyDbContext dbContext)
         {
             _logger = logger;
             _uiUpdateHub = uiUpdateHub;
+            _dbContext = dbContext;
         }
 
         public override async Task<Empty> StartSpan(StartSpanRequest request, ServerCallContext context)
         {
             await _uiUpdateHub.Clients.All.SendAsync("StartSpan", request);
+
+            var trace = await _dbContext
+                .Traces
+                .SingleOrDefaultAsync(t => t.TraceIdentifier == request.TraceIdentifier);
+
+            var span = new DottySpan
+            {
+                ApplicationName = request.ApplicationName,
+                HostName = request.Hostname,
+                RequestUrl = request.RequestUrl,
+                SpanIdentifier = request.SpanIdentifier,
+                StartedAtUtc = DateTime.UtcNow,
+                TraceIdentifier = request.TraceIdentifier
+            };
+
+            if (trace == null)
+            {
+                _logger.LogInformation($"Creating new  trace for { request.TraceIdentifier}");
+
+                trace = new DottyTrace();
+                trace.RequestUrl = request.RequestUrl;
+                trace.StartedAtUtc = DateTime.UtcNow;
+                trace.TraceIdentifier = request.TraceIdentifier;
+
+                trace.SpanData = span;
+
+                _dbContext.Traces.Add(trace);
+            }
+            else
+            {
+                var parentSpan = await _dbContext.Spans.SingleOrDefaultAsync(s => s.SpanIdentifier == request.ParentSpanIdentifier);
+                parentSpan.ChildSpans.Add(span);
+            }
+
+            await _dbContext.SaveChangesAsync();
+
             return new Empty();
         }
 
         public override async Task<Empty> StopSpan(StopSpanRequest request, ServerCallContext context)
         {
             await _uiUpdateHub.Clients.All.SendAsync("StopSpan", request);
+            var span = await _dbContext.Spans.SingleOrDefaultAsync(s => s.SpanIdentifier == request.SpanIdentifier);
+            
+            if (span == null)
+            {
+                _logger.LogWarning($"No span for { request.SpanIdentifier}, skipping");
+                return new Empty();
+            }
+
+            span.StoppedAtUtc = DateTime.UtcNow;
+
+            var ongoingSpans = await _dbContext.Spans.AnyAsync(s => s.TraceIdentifier == request.TraceIdentifier && s.StoppedAtUtc != null);
+            if (!ongoingSpans)
+            {
+                var trace = await _dbContext.Traces.SingleOrDefaultAsync(t => t.TraceIdentifier == request.TraceIdentifier);
+                trace.StoppedAtUtc = DateTime.UtcNow;
+            }
+
+            await _dbContext.SaveChangesAsync();
+
             return new Empty();
+        }
+
+        private bool StopSpanRecursive(DottySpan spanData, string spanIdentifier)
+        {
+            if (spanData.SpanIdentifier == spanIdentifier)
+            {
+                spanData.StoppedAtUtc = DateTime.UtcNow;
+                return true;
+            }
+            else
+            {
+                foreach (var span in spanData.ChildSpans)
+                {
+                    if (StopSpanRecursive(span, spanIdentifier))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public override async Task<Empty> MetricsUpdate(IAsyncStreamReader<MetricsUpdateRequest> requestStream, ServerCallContext context)
@@ -52,6 +133,11 @@ namespace DottyLogs.Server.Services
         public override async Task<Empty> PushLogMessage(LogRequest request, ServerCallContext context)
         {
             _logger.LogInformation($"Got log update: {request.Message}, {request.SpanIdentifier}");
+
+            var trace = await _dbContext.Spans.SingleOrDefaultAsync(t => t.SpanIdentifier == request.SpanIdentifier);
+            trace.Logs.Add(new DottyLogLine { Message = request.Message, DateTimeUtc = DateTime.UtcNow });
+            await _dbContext.SaveChangesAsync();
+
             await _uiUpdateHub.Clients.All.SendAsync("LogMessage", request);
             return new Empty();
         }

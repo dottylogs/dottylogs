@@ -524,8 +524,8 @@ import ServerConnectedEvent from "../models/serverconnectedevent";
 import ServerDisconnectedEvent from "../models/serverdisconnectedevent";
 
 import LogMessage from "../models/logmessage";
-import TraceRow from "../components/TraceRow.vue";
-import ServerTopBox from "../components/ServerTopBox.vue";
+import TraceRow from "./TraceRow.vue";
+import ServerTopBox from "./ServerTopBox.vue";
 import { debug } from "node:console";
 
 interface MainAppData {
@@ -589,9 +589,9 @@ export default defineComponent({
       if (trace.runningSpansCount == 0) {
         trace.inProgress = false;
         this.traces.forEach((trace, index) => {
-        if (trace.traceIdentifier == message.traceIdentifier) {
-          this.traces.splice(index, 1)
-        }
+        // if (trace.traceIdentifier == message.traceIdentifier) {
+        //   this.traces.splice(index, 1)
+        // }
       });
       }
     });

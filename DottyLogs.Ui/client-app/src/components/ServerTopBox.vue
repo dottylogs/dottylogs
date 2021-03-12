@@ -11,7 +11,7 @@
           {{ server.name }}
         </a>
         <p class="text-gray-500">
-          {{ server.tracingIdentifier }}|{{ server.hostName }}
+          {{ server.traceIdentifier }}|{{ server.hostName }}
         </p>
       </div>
     </div>
