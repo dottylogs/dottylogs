@@ -29,11 +29,11 @@ namespace DottyLogs.Example.ApiControllers
 
         [HttpGet("weather")]
         [HttpGet("backendweather")]
-        public async Task BackendWeather()
+        public async Task<IActionResult> BackendWeather()
         {
             _logger.LogInformation("Starting call to backend service");
-            var client = _httpClientFactory.CreateClient();     
-            var apiClient = new BackendApi.BackendApiClient("https://localhost:5005", client);
+            var client = _httpClientFactory.CreateClient("backend");     
+            var apiClient = new BackendApi.BackendApiClient(client.BaseAddress.ToString(), client);
             var weatherTask = apiClient.WeatherForecastAsync();
             var weather2Task = apiClient.WeatherForecastAsync();
             await Task.WhenAll(weatherTask, weather2Task);
@@ -43,6 +43,8 @@ namespace DottyLogs.Example.ApiControllers
             await Task.Delay(2000);
             var weather3 = await apiClient.WeatherForecastAsync();
             _logger.LogInformation("Finished call to backend service");
+
+            return Ok(weather3);
         }
     }
 }

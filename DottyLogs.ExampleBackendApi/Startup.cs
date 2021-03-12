@@ -19,7 +19,7 @@ namespace DottyLogs.ExampleBackendApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDottyRequestTracing();
+            services.AddDottyRequestTracing(c => c.DottyAddress = Configuration.GetServiceUri("DottyLogs"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

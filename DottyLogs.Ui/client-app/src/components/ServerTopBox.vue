@@ -1,11 +1,8 @@
 <template>
   <li class="relative col-span-1 flex shadow-sm rounded-md server-list-item">
-
-      <div
-        :class="boxclass"
-      >
-        {{ shortChars }}
-      </div>
+    <div :class="boxclass">
+      {{ shortChars }}
+    </div>
     <div
       class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate"
     >
@@ -40,7 +37,7 @@ export default defineComponent({
     },
     color() {
       let sum = 0;
-      this.server.name.split('').forEach((char) => {
+      this.server.name.split("").forEach((char) => {
         sum += char.charCodeAt();
       });
 
@@ -54,8 +51,11 @@ export default defineComponent({
       return possibles[sum % 5];
     },
     boxclass() {
-        return this.color + " flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md";
-    }
+      return (
+        this.color +
+        " flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md"
+      );
+    },
   },
 });
 </script>

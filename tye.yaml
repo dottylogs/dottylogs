@@ -1,0 +1,11 @@
+name: dottylogs
+
+services:
+- name: dottylogs
+  project: DottyLogs/DottyLogs.csproj
+  bindings:
+  - protocol: https
+- name: dottylogs-example
+  project: DottyLogs.Example/DottyLogs.Example.csproj
+- name: dottylogs-examplebackendapi
+  project: DottyLogs.ExampleBackendApi/DottyLogs.ExampleBackendApi.csproj

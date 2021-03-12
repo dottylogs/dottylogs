@@ -1,3 +1,4 @@
+using DottyLogs.Example.ApiControllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,7 +27,9 @@ namespace DottyLogs.Example
         {
             services.AddRazorPages();
             services.AddControllers();
-            services.AddDottyRequestTracing();
+            var x = Configuration.GetServiceUri("dottylogs-examplebackendapi");
+            services.AddHttpClient("backend", c => c.BaseAddress = Configuration.GetServiceUri("dottylogs-examplebackendapi")).AddDottyLog();
+            services.AddDottyRequestTracing(c => c.DottyAddress = Configuration.GetServiceUri("DottyLogs"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

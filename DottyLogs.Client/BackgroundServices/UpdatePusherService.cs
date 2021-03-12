@@ -1,5 +1,6 @@
 ﻿using Grpc.Net.Client;
 using GrpcDottyLogs;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
@@ -10,9 +11,9 @@ namespace DottyLogs.Client.BackgroundServices
         private readonly GrpcChannel _channel;
         private readonly GrpcDottyLogs.DottyLogs.DottyLogsClient _client;
 
-        public UpdatePusherService()
+        public UpdatePusherService(IConfiguration config)
         {
-            _channel = GrpcChannel.ForAddress("https://localhost:5001");
+            _channel = GrpcChannel.ForAddress(config.GetServiceUri("DottyLogs"));
             _client = new GrpcDottyLogs.DottyLogs.DottyLogsClient(_channel);
         }
 

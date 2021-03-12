@@ -10,21 +10,24 @@
     >
       <div class="flex-1 px-4 py-2 text-sm truncate">
         {{ span.requestUrl }}
+        <span class="text-gray-500 font-normal"
+              >({{ span.logs.length }} log messages,
+              {{ span.childrenCount }} spans)</span
+            >
         <p class="text-gray-500">{{ span.applicationName }}</p>
       </div>
-      <div class="flex-shrink-0 pr-2">
-        <!-- Heroicon name: solid/dots-vertical -->
-        <svg
-          class="w-5 h-5"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          aria-hidden="true"
+        <div class="flex-shrink-0 pr-2">
+          <div
+          v-show="span.inProgress"
+          class="console mx-7 my-2 px-2 py-1 rounded"
         >
-          <path
-            d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"
-          />
-        </svg>
+            <p
+              class="console-item"
+            >
+              
+            </p>
+          <span class="blinker mt-1"></span>
+        </div>
       </div>
     </div>
   </li>

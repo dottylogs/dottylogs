@@ -1,9 +1,9 @@
-﻿namespace DottyLogs
+﻿using System;
+
+namespace DottyLogs
 {
     public class DottyLogLoggerConfiguration
     {
-        public DottyLogLoggerConfiguration()
-        {
-        }
+        public Uri DottyAddress { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Grpc.Core;
 using Grpc.Net.Client;
 using GrpcDottyLogs;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,15 +24,17 @@ namespace DottyLogs.Client.BackgroundServices
         private float _cpu;
         private float _memory;
         private ILogger<MetricsAndHeartbeatBackgroundService> _logger;
+        private readonly Uri _baseAddress;
         private Timer _timer;
         private GrpcChannel _channel;
         private AsyncClientStreamingCall<MetricsUpdateRequest, Empty> _metricsUpdateChannel;
         private AsyncClientStreamingCall<HeartbeatRequest, Empty> _heatbeatChannel;
         private bool disposedValue;
 
-        public MetricsAndHeartbeatBackgroundService(ILogger<MetricsAndHeartbeatBackgroundService> logger)
+        public MetricsAndHeartbeatBackgroundService(ILogger<MetricsAndHeartbeatBackgroundService> logger, IConfiguration config)
         {
             _logger = logger;
+            _baseAddress = config.GetServiceUri("DottyLogs");
         }
 
         public void MetricEventCallback(float cpu, float memory)
@@ -43,8 +46,8 @@ namespace DottyLogs.Client.BackgroundServices
         public async Task StartAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Timed Hosted Service running.");
-
-            _channel = GrpcChannel.ForAddress("https://localhost:5001");
+            _logger.LogInformation($"Connecting to {_baseAddress}");
+            _channel = GrpcChannel.ForAddress(_baseAddress);
             var client = new GrpcDottyLogs.DottyLogs.DottyLogsClient(_channel);
 
             _metricsUpdateChannel = client.MetricsUpdate(cancellationToken: stoppingToken);

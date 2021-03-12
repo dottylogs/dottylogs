@@ -10,12 +10,21 @@ namespace DottyLogs
 {
     public static class ClientExtensions
     {
-        public static IServiceCollection AddDottyRequestTracing(this IServiceCollection services)
+        public static IServiceCollection AddDottyRequestTracing(
+            this IServiceCollection builder,
+            Action<DottyLogLoggerConfiguration> configure)
+        {
+            var config = new DottyLogLoggerConfiguration();
+            configure(config);
+
+            return builder.AddDottyRequestTracing(config);
+        }
+
+        public static IServiceCollection AddDottyRequestTracing(this IServiceCollection services, DottyLogLoggerConfiguration config)
         {
             services.AddHostedService<MetricsAndHeartbeatBackgroundService>();
-            var config = new DottyLogLoggerConfiguration();
 
-            var sink = new DottyLogSink();
+            var sink = new DottyLogSink(config);
 
             services.AddLogging(
                 b => b.AddProvider(new DottyLogLoggerProvider(config, sink)));
@@ -37,7 +46,7 @@ namespace DottyLogs
 
         public static DottyLogLoggerProvider CreateProvider(DottyLogLoggerConfiguration config)
         {
-            var sink = new DottyLogSink();
+            var sink = new DottyLogSink(config);
 
             return new DottyLogLoggerProvider(config, sink);
         }

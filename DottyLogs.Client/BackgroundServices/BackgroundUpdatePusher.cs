@@ -9,9 +9,9 @@ namespace DottyLogs.Client.BackgroundServices
         private readonly GrpcChannel _channel;
         private readonly GrpcDottyLogs.DottyLogs.DottyLogsClient _client;
 
-        public DottyLogSink()
+        public DottyLogSink(DottyLogLoggerConfiguration config)
         {
-            _channel = GrpcChannel.ForAddress("https://localhost:5001");
+            _channel = GrpcChannel.ForAddress(config.DottyAddress);
             _client = new GrpcDottyLogs.DottyLogs.DottyLogsClient(_channel);
         }
 

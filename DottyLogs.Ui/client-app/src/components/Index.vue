@@ -130,52 +130,6 @@
                   Recent
                 </a>
               </div>
-              <div class="mt-8">
-                <h3
-                  class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider"
-                  id="teams-headline"
-                >
-                  Teams
-                </h3>
-                <div
-                  class="mt-1 space-y-1"
-                  role="group"
-                  aria-labelledby="teams-headline"
-                >
-                  <a
-                    href="#"
-                    class="group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50"
-                  >
-                    <span
-                      class="w-2.5 h-2.5 mr-4 bg-indigo-500 rounded-full"
-                      aria-hidden="true"
-                    ></span>
-                    <span class="truncate"> Engineering </span>
-                  </a>
-
-                  <a
-                    href="#"
-                    class="group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50"
-                  >
-                    <span
-                      class="w-2.5 h-2.5 mr-4 bg-green-500 rounded-full"
-                      aria-hidden="true"
-                    ></span>
-                    <span class="truncate"> Human Resources </span>
-                  </a>
-
-                  <a
-                    href="#"
-                    class="group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50"
-                  >
-                    <span
-                      class="w-2.5 h-2.5 mr-4 bg-yellow-500 rounded-full"
-                      aria-hidden="true"
-                    ></span>
-                    <span class="truncate"> Customer Success </span>
-                  </a>
-                </div>
-              </div>
             </nav>
           </div>
         </div>
@@ -254,7 +208,7 @@
                     d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                   />
                 </svg>
-                Home
+                Live
               </a>
 
               <a
@@ -277,7 +231,7 @@
                     d="M4 6h16M4 10h16M4 14h16M4 18h16"
                   />
                 </svg>
-                My tasks
+                History
               </a>
 
               <a
@@ -300,55 +254,8 @@
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                Recent
+                About
               </a>
-            </div>
-            <div class="mt-8">
-              <!-- Secondary navigation -->
-              <h3
-                class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider"
-                id="teams-headline"
-              >
-                Teams
-              </h3>
-              <div
-                class="mt-1 space-y-1"
-                role="group"
-                aria-labelledby="teams-headline"
-              >
-                <a
-                  href="#"
-                  class="group flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:text-gray-900 hover:bg-gray-50"
-                >
-                  <span
-                    class="w-2.5 h-2.5 mr-4 bg-indigo-500 rounded-full"
-                    aria-hidden="true"
-                  ></span>
-                  <span class="truncate"> Engineering </span>
-                </a>
-
-                <a
-                  href="#"
-                  class="group flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:text-gray-900 hover:bg-gray-50"
-                >
-                  <span
-                    class="w-2.5 h-2.5 mr-4 bg-green-500 rounded-full"
-                    aria-hidden="true"
-                  ></span>
-                  <span class="truncate"> Human Resources </span>
-                </a>
-
-                <a
-                  href="#"
-                  class="group flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:text-gray-900 hover:bg-gray-50"
-                >
-                  <span
-                    class="w-2.5 h-2.5 mr-4 bg-yellow-500 rounded-full"
-                    aria-hidden="true"
-                  ></span>
-                  <span class="truncate"> Customer Success </span>
-                </a>
-              </div>
             </div>
           </nav>
         </div>
@@ -507,7 +414,7 @@
         >
           <div class="flex-1 min-w-0">
             <h1 class="text-lg font-medium leading-6 text-gray-900 sm:truncate">
-              Home
+              Live Dashboard
             </h1>
           </div>
         </div>
@@ -593,8 +500,9 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-100">
-                <TraceRow v-for="trace in traces" v-bind:key="trace.tracingIdentifier" :trace="trace" />
-
+                <transition-group name="tracelist-animation" v-on:after-leave="clearOldTrace">
+                  <TraceRow v-for="trace in traces" v-bind:key="trace.tracingIdentifier" v-bind:id="trace.traceIdentifier" :trace="trace" class="tracelist-animation-item"  />
+                </transition-group>
                 <!-- More items... -->
               </tbody>
             </table>
@@ -661,9 +569,11 @@ export default defineComponent({
 
         parentSpan.childSpans.push(newSpan);
 
+        trace.runningSpansCount = trace.runningSpansCount + 1;
       } else {
 
         const newTrace = new Trace(newSpan, message.requestUrl, message.tracingIdentifier);
+        
         this.traces.unshift(newTrace);
       }
     });
@@ -671,6 +581,19 @@ export default defineComponent({
     connection.on("StopSpan", (message: StartSpan) => {
       let span = this.spanLookup[message.spanIdentifier];
       span.inProgress = false;
+
+      const trace = this.traces.find(s => s.tracingIdentifier == message.tracingIdentifier);
+
+      trace.runningSpansCount = trace.runningSpansCount - 1;
+
+      if (trace.runningSpansCount == 0) {
+        trace.inProgress = false;
+        this.traces.forEach((trace, index) => {
+        // if (trace.tracingIdentifier == message.tracingIdentifier) {
+        //   this.traces.splice(index, 1)
+        // }
+      });
+      }
     });
 
     connection.on("LogMessage", (message: LogMessage) => {
@@ -701,6 +624,11 @@ export default defineComponent({
     });
 
     connection.start().catch(err => document.write(err));
+  },
+  methods: {
+    clearOldTrace(el: any) {
+      console.log({el});
+    }
   },
   components: {
     'TraceRow': TraceRow,
@@ -753,5 +681,13 @@ export default defineComponent({
 
 .server-list-leave-active {
   position: absolute;
+}
+
+.tracelist-animation-item {
+  transition: all 1s;
+}
+.tracelist-animation-enter, .tracelist-animation-leave-to
+/* .list-complete-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
