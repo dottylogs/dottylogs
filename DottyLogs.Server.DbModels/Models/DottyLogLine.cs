@@ -13,7 +13,6 @@ namespace DottyLogs.Server.DbModels
 
         public string TraceIdentifier { get; set; }
 
-        [NotMapped]
         public string SpanIdentifier { get; set; }
 
         public long DottySpanId { get; set; }

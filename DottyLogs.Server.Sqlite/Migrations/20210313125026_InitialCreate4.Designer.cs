@@ -3,14 +3,16 @@ using System;
 using DottyLogs.Server.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DottyLogs.Server.Sqlite.Migrations
 {
     [DbContext(typeof(SqliteDottyDbContext))]
-    partial class SqliteDottyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210313125026_InitialCreate4")]
+    partial class InitialCreate4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +31,6 @@ namespace DottyLogs.Server.Sqlite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Message")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SpanIdentifier")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TraceIdentifier")

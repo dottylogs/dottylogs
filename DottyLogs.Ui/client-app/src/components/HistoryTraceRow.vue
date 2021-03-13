@@ -8,7 +8,8 @@
           class="flex-shrink-0 w-2.5 h-2.5 rounded-full bg-pink-600"
           aria-hidden="true"
         ></div>
-        <a href="#" class="truncate hover:text-gray-600">
+        <router-link :to="{ name: 'details', params: { traceIdentifier: trace.traceIdentifier }}" class="truncate hover:text-gray-600">
+        
           <span>
             {{ trace.requestUrl }}
             <span class="text-gray-500 font-normal"
@@ -16,7 +17,8 @@
                {{ trace.spanData.childrenCount }} spans)</span
             >
           </span>
-        </a>
+
+        </router-link>
       </div>
     </td>
   </tr>

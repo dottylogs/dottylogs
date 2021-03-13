@@ -146,8 +146,8 @@
       >
         <div class="flex items-center flex-shrink-0 px-6">
           <h1 class="text-lg font-medium leading-6 text-gray-900 sm:truncate">
-              DottyLogs
-            </h1>
+            DottyLogs
+          </h1>
         </div>
         <!-- Sidebar component, swap this element with another sidebar if you like -->
         <div class="h-0 flex-1 flex flex-col overflow-y-auto">
@@ -404,109 +404,149 @@
           </div>
         </div>
       </div>
-      <main
-        class="flex-1 relative z-0 overflow-y-auto focus:outline-none"
-        tabindex="0"
-      >
-        <!-- Page title & actions -->
+      <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none">
         <div
           class="border-b border-gray-200 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8"
         >
           <div class="flex-1 min-w-0">
             <h1 class="text-lg font-medium leading-6 text-gray-900 sm:truncate">
-              Live Dashboard
+              Details drilldown
             </h1>
           </div>
         </div>
-        <!-- Pinned projects -->
-        <div class="px-4 mt-6 sm:px-6 lg:px-8">
-          <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide">
-            Servers
-          </h2>
-          <ul
-            class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 xl:grid-cols-4 mt-3"
-          >
-          <ServerTopBox v-for="(server, ti) in serverTraceIdentifierLookup" v-bind:key="ti" v-bind:server="server"/>
-            <transition-group name="server-list">
-              
-            </transition-group>
-          </ul>
+        
+        <!-- Page header -->
+        <div
+          class="px-8 pt-4"
+        >
+          <div class="flex items-center space-x-5">
+            <div>
+              <h1 class="text-2xl font-bold text-gray-900">{{ trace.requestUrl }}</h1>
+              <p class="text-sm font-medium text-gray-500">
+                Started on 
+                <!-- <span class="text-gray-900">{{ trace.spanData?.applicationName }}</span> on <span class="text-gray-900">{{ trace.spanData.hostname }}</span> at  -->
+                <time datetime="2020-08-25">timestamp</time>
+              </p>
+            </div>
+          </div>
         </div>
 
-        <!-- Projects list (only on smallest breakpoint) -->
-        <div class="mt-10 sm:hidden">
-          <div class="px-4 sm:px-6">
-            <h2
-              class="text-gray-500 text-xs font-medium uppercase tracking-wide"
-            >
-              Requests
-            </h2>
+        <div
+          class="mt-8 grid grid-cols-2 gap-6"
+        >
+          <div class="space-y-6 lg:col-start-1 lg:col-span-2">
+            <!-- Description list-->
+            <section>
+              <div class="bg-white shadow rounded">
+                <div class="border-t border-opacity-80 border-gray-200 px-4 py-5 sm:px-6">
+                  <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+                    <div class="sm:col-span-1">
+                      <dt class="text-sm font-medium text-gray-500">
+                        Application
+                      </dt>
+                      <dd class="mt-1 text-sm text-gray-900">
+                        <!-- {{ trace.spanData.applicationName }} -->
+                      </dd>
+                    </div>
+                    <div class="sm:col-span-1">
+                      <dt class="text-sm font-medium text-gray-500">
+                        Hostname
+                      </dt>
+                      <dd class="mt-1 text-sm text-gray-900">
+                        <!-- {{ trace.spanData.hostname }} -->
+                      </dd>
+                    </div>
+                    <div class="sm:col-span-1">
+                      <dt class="text-sm font-medium text-gray-500">
+                        Started at
+                      </dt>
+                      <dd class="mt-1 text-sm text-gray-900">TODO</dd>
+                    </div>
+                    <div class="sm:col-span-1">
+                      <dt class="text-sm font-medium text-gray-500">Username</dt>
+                      <dd class="mt-1 text-sm text-gray-900">
+                        TODO
+                      </dd>
+                    </div>
+                    <div class="sm:col-span-2">
+                      <dt class="text-sm font-medium text-gray-500">
+                        Logs/Traces
+                      </dt>
+                      <dd class="mt-1 text-sm text-gray-900">
+                        
+                        <ul
+                          class="border border-gray-200 rounded-md divide-y divide-gray-200"
+                        >
+                          <SpanDetail v-bind:span="trace.spanData" />
+                        </ul>
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+              </div>
+            </section>
           </div>
-          <ul class="mt-3 border-t border-gray-200 divide-y divide-gray-100">
-            <li>
-              <a
-                href="#"
-                class="group flex items-center justify-between px-4 py-4 hover:bg-gray-50 sm:px-6"
-              >
-                <span class="flex items-center truncate space-x-3">
-                  <span
-                    class="w-2.5 h-2.5 flex-shrink-0 rounded-full bg-pink-600"
-                    aria-hidden="true"
-                  ></span>
-                  <span class="font-medium truncate text-sm leading-6">
-                    GraphQL API
-                    <span class="truncate font-normal text-gray-500"
-                      >in Engineering</span
-                    >
-                  </span>
-                </span>
-                <!-- Heroicon name: solid/chevron-right -->
-                <svg
-                  class="ml-4 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            </li>
 
-            <!-- More items... -->
-          </ul>
-        </div>
-
-        <!-- Projects table (small breakpoint and up) -->
-        <div class="hidden mt-8 sm:block">
-          <div
-            class="align-middle inline-block min-w-full border-b border-gray-200"
+          <section
+            aria-labelledby="timeline-title"
+            class="lg:col-start-3 lg:col-span-1"
           >
-            <table class="min-w-full">
-              <thead>
-                <tr class="border-t border-gray-200">
-                  <th
-                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    <span class="lg:pl-2">URL</span>
-                  </th>
-                  <th
-                    class="pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  ></th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-100">
-                <transition-group name="tracelist-animation" v-on:after-leave="clearOldTrace">
-                  <TraceRow v-for="trace in traces" v-bind:key="trace.traceIdentifier" v-bind:id="trace.traceIdentifier" :trace="trace" class="tracelist-animation-item"  />
-                </transition-group>
-                <!-- More items... -->
-              </tbody>
-            </table>
-          </div>
+            <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
+              <h2 id="timeline-title" class="text-lg font-medium text-gray-900">
+                Breakdown (coming!)
+              </h2>
+
+              <!-- Activity Feed -->
+              <div class="mt-6 flow-root">
+                <ul class="-mb-8">
+                  <li>
+                    <div class="relative pb-8">
+                      <div class="relative flex space-x-3">
+                        <div>
+                          <span
+                            class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white"
+                          >
+                            <!-- Heroicon name: solid/user -->
+                            <svg
+                              class="h-5 w-5 text-white"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              aria-hidden="true"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                clip-rule="evenodd"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                        <div
+                          class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4"
+                          v-if="trace.spanData"
+                        >
+                          <div>
+                            <p class="text-sm text-gray-500">
+                              30%
+                              <a href="#" class="font-medium text-gray-900"
+                                >{{ trace.spanData.applicationName }} SQL</a
+                              >
+                            </p>
+                          </div>
+                          <div
+                            class="text-right text-sm whitespace-nowrap text-gray-500"
+                          >
+                            <time datetime="2020-09-20">Sep 20</time>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
         </div>
       </main>
     </div>
@@ -516,124 +556,93 @@
 <script lang="ts">
 import { ref, defineComponent } from "vue";
 import * as signalR from "@microsoft/signalr";
-import StartSpan from "../models/startspan";
-import Span from "../models/span";
 import Trace from "../models/trace";
-import Server from "../models/server";
-import ServerConnectedEvent from "../models/serverconnectedevent";
-import ServerDisconnectedEvent from "../models/serverdisconnectedevent";
 
-import LogMessage from "../models/logmessage";
 import TraceRow from "../components/TraceRow.vue";
 import ServerTopBox from "../components/ServerTopBox.vue";
-import { debug } from "node:console";
-
-interface MainAppData {
-  traces: Trace[];
-  spanLookup: {[spanId: string]:Span};
-  servers: Server[];
-  serverTraceIdentifierLookup: {[serveId: string]:Server};
-}
+import StartSpan from "../models/startspan";
+import Span from "../models/span";
+import StopSpan from "../models/stopspan";
+import LogMessage from "../models/logmessage";
+import SpanDetail from "../components/SpanDetail.vue";
 
 export default defineComponent({
-  name: "Index",
-  props: {
-
-  },
+  name: "Details",
+  props: {},
   data: () => {
     return {
-      traces: [] as Trace[],
-      spanLookup: {} as {[spanId: string]:Span},
-      servers: [] as Server[],
-      serverTraceIdentifierLookup: {} as {[serveId: string]:Server}
-    } as MainAppData
+      traceIdentifier: "",
+      trace: new Trace(),
+      spanLookup: {} as { [spanId: string]: Span },
+    };
   },
-  setup: () => {
-    const count = ref(0);
-    return { count };
-  },
+  setup: () => {},
   mounted() {
     const connection = new signalR.HubConnectionBuilder()
       .withUrl("/ui-updates")
       .build();
 
+    this.traceIdentifier = Array.isArray(this.$route.params.traceIdentifier)
+      ? this.$route.params.traceIdentifier[0]
+      : this.$route.params.traceIdentifier;
+
+    connection
+      .start()
+      .catch((err) => document.write(err))
+      .then(() =>
+        connection.send("startStreamingDetails", this.traceIdentifier)
+      );
+
+    connection.on("NewTrace", (message: Trace) => {
+      this.trace.requestUrl = message.requestUrl;
+      this.trace.inProgress = true;
+      this.trace.traceIdentifier = message.traceIdentifier;
+    });
+
     connection.on("StartSpan", (message: StartSpan) => {
-      // See if we have a trace already
-      const trace = this.traces.find(s => s.traceIdentifier == message.traceIdentifier)
-      const newSpan = new Span(message.spanIdentifier, message.requestUrl, message.traceIdentifier, message.hostname, message.applicationName);
+      const trace = this.trace;
+      const newSpan = new Span(
+        message.spanIdentifier,
+        message.requestUrl,
+        message.traceIdentifier,
+        message.hostname,
+        message.applicationName
+      );
 
       this.spanLookup[message.spanIdentifier] = newSpan;
-      if (trace) {
-        // We already have a trace, so just add the span beneath the current parent one.
+      if (message.parentSpanIdentifier) {
+        // We already have a span, so just add the span beneath the current parent one.
         const parentSpan = this.spanLookup[message.parentSpanIdentifier];
 
         parentSpan.childSpans.push(newSpan);
 
         trace.runningSpansCount = trace.runningSpansCount + 1;
       } else {
-
-        const newTrace = new Trace(newSpan, message.requestUrl, message.traceIdentifier);
-        
-        this.traces.unshift(newTrace);
+        this.trace.spanData = newSpan;
       }
     });
 
-    connection.on("StopSpanRequest", (message: StartSpan) => {
+    connection.on("StopSpan", (message: StopSpan) => {
       let span = this.spanLookup[message.spanIdentifier];
       span.inProgress = false;
 
-      const trace = this.traces.find(s => s.traceIdentifier == message.traceIdentifier);
+      const trace = this.trace;
 
       trace.runningSpansCount = trace.runningSpansCount - 1;
 
       if (trace.runningSpansCount == 0) {
         trace.inProgress = false;
-        this.traces.forEach((trace, index) => {
-        // if (trace.traceIdentifier == message.traceIdentifier) {
-        //   this.traces.splice(index, 1)
-        // }
-      });
       }
     });
 
-    connection.on("LogMessage", (message: LogMessage) => {
+    connection.on("LogMessage", (message: LogMessage): void => {
       let span = this.spanLookup[message.spanIdentifier];
       span.logs.push(message);
     });
-
-    connection.on("ServerConnected", (message: ServerConnectedEvent) => {
-      let existingServer = this.servers.find(s => s.traceIdentifier === message.traceIdentifier);
-      if (!existingServer) {
-        const server = new Server(message.traceIdentifier, message.hostName, message.applicationName);
-        this.servers.push(server)
-
-        this.serverTraceIdentifierLookup[message.traceIdentifier] = server;
-      }
-    });
-
-    connection.on("ServerDisconnected", (message: ServerDisconnectedEvent) => {
-      console.info("disconnecting")
-      console.log({message, s: this.servers});
-      this.servers.forEach((server, index) => {
-        if (server.traceIdentifier == message.traceIdentifier) {
-          this.servers.splice(index, 1)
-        }
-      });
-
-      delete this.serverTraceIdentifierLookup[message.traceIdentifier];
-    });
-
-    connection.start().catch(err => document.write(err));
-  },
-  methods: {
-    clearOldTrace(el: any) {
-      console.log({el});
-    }
   },
   components: {
-    'TraceRow': TraceRow,
-    'ServerTopBox': ServerTopBox
-  }
+    'SpanDetail': SpanDetail
+  },
 });
 </script>
 
@@ -644,29 +653,30 @@ export default defineComponent({
   font: Inconsolata, monospace;
 }
 
-.blinker {  
+.blinker {
   height: 1em;
   display: block;
   width: 0.6em;
   margin-bottom: 4px;
   animation: blinky 1200ms linear infinite;
-} 
-@keyframes blinky {  
-  0% {    
-    background: #ffffff;  
-  }  
-  49% {    
-    background: #ffffff;  
-  }  
-  60% {    
-    background: transparent;  
-  }  
-  99% {    
-    background: transparent;  
-  }  100% {    
-    background: #ffffff;  
+}
+@keyframes blinky {
+  0% {
+    background: #ffffff;
   }
-} 
+  49% {
+    background: #ffffff;
+  }
+  60% {
+    background: transparent;
+  }
+  99% {
+    background: transparent;
+  }
+  100% {
+    background: #ffffff;
+  }
+}
 
 .server-list-item {
   transition: all 0.8s ease;

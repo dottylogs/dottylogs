@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import 'reflect-metadata';
+import LogMessage from './logmessage';
 
 export default class Span {
     spanIdentifier: string;
@@ -7,7 +8,7 @@ export default class Span {
     traceIdentifier: string;
     @Type(() => Span)
     childSpans: Span[];
-    logs: string[];
+    logs: LogMessage[];
     inProgress: boolean;
     hostname: string;
     applicationName: string;

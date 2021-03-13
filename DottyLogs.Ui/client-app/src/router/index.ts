@@ -12,8 +12,8 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "history" */ '../views/History.vue')
     },
     {
-        path: '/',
-        name: 'Details',
+        path: '/trace/:traceIdentifier',
+        name: 'details',
         component: () => import(/* webpackChunkName: "details" */ '../views/Details.vue')
     },
     {

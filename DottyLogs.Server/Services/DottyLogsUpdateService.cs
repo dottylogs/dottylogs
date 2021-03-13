@@ -37,6 +37,7 @@ namespace DottyLogs.Server.Services
             {
                 ApplicationName = request.ApplicationName,
                 HostName = request.Hostname,
+                ParentSpanIdentifier = request.ParentSpanIdentifier,
                 RequestUrl = request.RequestUrl,
                 SpanIdentifier = request.SpanIdentifier,
                 StartedAtUtc = DateTime.UtcNow,

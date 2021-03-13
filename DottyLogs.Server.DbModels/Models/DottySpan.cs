@@ -20,5 +20,6 @@ namespace DottyLogs.Server.DbModels
         public List<DottySpan> ChildSpans { get; set; } = new();
 
         public long? DottySpanId { get; set; }
+        public string ParentSpanIdentifier { get; set; }
     }
 }
