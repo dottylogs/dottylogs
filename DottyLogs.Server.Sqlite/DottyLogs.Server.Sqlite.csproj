@@ -19,4 +19,8 @@
     <ProjectReference Include="..\DottyLogs.Server.DbModels\DottyLogs.Server.DbModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

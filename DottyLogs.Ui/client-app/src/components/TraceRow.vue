@@ -12,14 +12,14 @@
           <span>
             {{ trace.requestUrl }}
             <span class="text-gray-500 font-normal"
-              >({{ trace.topSpan.logs.length }} log messages,
-              {{ trace.topSpan.childrenCount }} spans)</span
+              >({{ trace.spanData.logs.length }} log messages,
+              {{ trace.spanData.childrenCount }} spans)</span
             >
           </span>
         </a>
       </div>
       <div
-        v-show="trace.topSpan.logs.length > 0"
+        v-show="trace.spanData.logs.length > 0"
         class="console mx-7 my-2 px-2 py-1 rounded"
       >
           <p
@@ -29,9 +29,9 @@
           >
             {{ log.message }}
           </p>
-        <span v-if="trace.topSpan.inProgress" class="blinker"></span>
+        <span v-if="trace.spanData.inProgress" class="blinker"></span>
       </div>
-      <div v-show="trace.topSpan.childSpans.length > 0">
+      <div v-show="trace.spanData.childSpans.length > 0">
         <div class="hidden mt-8 sm:block ml-8">
           <div
             class="align-middle inline-block min-w-full"
@@ -42,7 +42,7 @@
               class="mt-3 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4"
             >
               <SpanBox
-                v-for="span in trace.topSpan.childSpans"
+                v-for="span in trace.spanData.childSpans"
                 v-bind:key="span.spanIdentifier"
                 :span="span"
               />
@@ -69,7 +69,7 @@ export default defineComponent({
   },
   computed: {
     fiveLogEntries(): String[] {
-      return this.trace.topSpan.logs.slice(-5);
+      return this.trace.spanData.logs.slice(-5);
     },
   },
 });

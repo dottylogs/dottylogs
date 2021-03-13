@@ -18,5 +18,7 @@ namespace DottyLogs.Server.DbModels
         public DateTime? StoppedAtUtc { get; set; }
         public List<DottyLogLine> Logs { get; set; } = new();
         public List<DottySpan> ChildSpans { get; set; } = new();
+
+        public long? DottySpanId { get; set; }
     }
 }

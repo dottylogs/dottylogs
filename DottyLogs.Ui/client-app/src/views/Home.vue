@@ -212,7 +212,7 @@
               </a>
 
               <a
-                href="#"
+                href="/history"
                 class="text-gray-700 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
               >
                 <!-- Heroicon name: outline/view-list -->
@@ -500,7 +500,7 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-100">
-                <transition-group name="tracelist-animation" v-on:after-leave="clearOldTrace">
+                <transition-group name="tracelist-animation">
                   <TraceRow v-for="trace in traces" v-bind:key="trace.traceIdentifier" v-bind:id="trace.traceIdentifier" :trace="trace" class="tracelist-animation-item"  />
                 </transition-group>
                 <!-- More items... -->
@@ -517,6 +517,7 @@
 import { ref, defineComponent } from "vue";
 import * as signalR from "@microsoft/signalr";
 import StartSpan from "../models/startspan";
+import StopSpan from "../models/stopspan";
 import Span from "../models/span";
 import Trace from "../models/trace";
 import Server from "../models/server";
@@ -524,8 +525,8 @@ import ServerConnectedEvent from "../models/serverconnectedevent";
 import ServerDisconnectedEvent from "../models/serverdisconnectedevent";
 
 import LogMessage from "../models/logmessage";
-import TraceRow from "./TraceRow.vue";
-import ServerTopBox from "./ServerTopBox.vue";
+import TraceRow from "../components/TraceRow.vue";
+import ServerTopBox from "../components/ServerTopBox.vue";
 import { debug } from "node:console";
 
 interface MainAppData {
@@ -536,7 +537,7 @@ interface MainAppData {
 }
 
 export default defineComponent({
-  name: "Index",
+  name: "Home",
   props: {
 
   },
@@ -568,17 +569,19 @@ export default defineComponent({
         const parentSpan = this.spanLookup[message.parentSpanIdentifier];
 
         parentSpan.childSpans.push(newSpan);
-
+        
         trace.runningSpansCount = trace.runningSpansCount + 1;
       } else {
 
-        const newTrace = new Trace(newSpan, message.requestUrl, message.traceIdentifier);
-        
+        const newTrace = new Trace();
+        newTrace.spanData = newSpan;
+        newTrace.requestUrl = message.requestUrl;
+        newTrace.traceIdentifier = message.traceIdentifier;
         this.traces.unshift(newTrace);
       }
     });
 
-    connection.on("StopSpan", (message: StartSpan) => {
+    connection.on("StopSpan", (message: StopSpan) => {
       let span = this.spanLookup[message.spanIdentifier];
       span.inProgress = false;
 
@@ -589,9 +592,9 @@ export default defineComponent({
       if (trace.runningSpansCount == 0) {
         trace.inProgress = false;
         this.traces.forEach((trace, index) => {
-        // if (trace.traceIdentifier == message.traceIdentifier) {
-        //   this.traces.splice(index, 1)
-        // }
+        if (trace.traceIdentifier == message.traceIdentifier) {
+          this.traces.splice(index, 1)
+        }
       });
       }
     });
@@ -624,11 +627,6 @@ export default defineComponent({
     });
 
     connection.start().catch(err => document.write(err));
-  },
-  methods: {
-    clearOldTrace(el: any) {
-      console.log({el});
-    }
   },
   components: {
     'TraceRow': TraceRow,

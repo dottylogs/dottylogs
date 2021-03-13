@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DottyLogs.Server.Sqlite.Migrations
 {
     [DbContext(typeof(SqliteDottyDbContext))]
-    [Migration("20210312205035_InitialCreate")]
+    [Migration("20210312214611_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,11 +33,16 @@ namespace DottyLogs.Server.Sqlite.Migrations
                     b.Property<string>("Message")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("TraceIdentifier")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DottySpanId");
 
-                    b.ToTable("DottyLogLine");
+                    b.HasIndex("TraceIdentifier");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("DottyLogs.Server.DbModels.DottySpan", b =>

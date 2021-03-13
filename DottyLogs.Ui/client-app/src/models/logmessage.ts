@@ -1,11 +1,11 @@
 export default class LogMessage {
     spanIdentifier: string;
     message: string;
-    timestamp: string;
+    dateTimeUtc: string;
 
-    constructor(spanIdentifier: string, message: string, timestamp: string) {
+    constructor(spanIdentifier: string, message: string, dateTimeUtc: string) {
         this.spanIdentifier = spanIdentifier;
         this.message = message;
-        this.timestamp = timestamp;
+        this.dateTimeUtc = dateTimeUtc;
     }
 }

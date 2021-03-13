@@ -31,11 +31,16 @@ namespace DottyLogs.Server.Sqlite.Migrations
                     b.Property<string>("Message")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("TraceIdentifier")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DottySpanId");
 
-                    b.ToTable("DottyLogLine");
+                    b.HasIndex("TraceIdentifier");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("DottyLogs.Server.DbModels.DottySpan", b =>

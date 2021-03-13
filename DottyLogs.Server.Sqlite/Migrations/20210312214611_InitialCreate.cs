@@ -34,20 +34,21 @@ namespace DottyLogs.Server.Sqlite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DottyLogLine",
+                name: "Logs",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Message = table.Column<string>(type: "TEXT", nullable: true),
                     DateTimeUtc = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    TraceIdentifier = table.Column<string>(type: "TEXT", nullable: true),
                     DottySpanId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DottyLogLine", x => x.Id);
+                    table.PrimaryKey("PK_Logs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DottyLogLine_Spans_DottySpanId",
+                        name: "FK_Logs_Spans_DottySpanId",
                         column: x => x.DottySpanId,
                         principalTable: "Spans",
                         principalColumn: "Id",
@@ -78,9 +79,14 @@ namespace DottyLogs.Server.Sqlite.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DottyLogLine_DottySpanId",
-                table: "DottyLogLine",
+                name: "IX_Logs_DottySpanId",
+                table: "Logs",
                 column: "DottySpanId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Logs_TraceIdentifier",
+                table: "Logs",
+                column: "TraceIdentifier");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Spans_DottySpanId",
@@ -111,7 +117,7 @@ namespace DottyLogs.Server.Sqlite.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DottyLogLine");
+                name: "Logs");
 
             migrationBuilder.DropTable(
                 name: "Traces");

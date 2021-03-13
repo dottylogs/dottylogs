@@ -536,7 +536,7 @@ interface MainAppData {
 }
 
 export default defineComponent({
-  name: "Index",
+  name: "About",
   props: {
 
   },
@@ -578,7 +578,7 @@ export default defineComponent({
       }
     });
 
-    connection.on("StopSpan", (message: StartSpan) => {
+    connection.on("StopSpanRequest", (message: StartSpan) => {
       let span = this.spanLookup[message.spanIdentifier];
       span.inProgress = false;
 
@@ -589,9 +589,9 @@ export default defineComponent({
       if (trace.runningSpansCount == 0) {
         trace.inProgress = false;
         this.traces.forEach((trace, index) => {
-        if (trace.traceIdentifier == message.traceIdentifier) {
-          this.traces.splice(index, 1)
-        }
+        // if (trace.traceIdentifier == message.traceIdentifier) {
+        //   this.traces.splice(index, 1)
+        // }
       });
       }
     });

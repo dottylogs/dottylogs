@@ -1,17 +1,18 @@
+import { Type } from "class-transformer";
 import Span from "../models/span";
+import 'reflect-metadata';
 
 export default class Trace {
-    requestUrl: string;
-    traceIdentifier: string;
-    topSpan: Span;
-    inProgress: boolean;
+    requestUrl!: string;
+    traceIdentifier!: string;
+
+    @Type(() => Span)
+    spanData!: Span;
+
+    inProgress!: boolean;
     runningSpansCount: number;
 
-    constructor(topSpan: Span, requestUrl: string, traceIdentifier: string) {
-        this.requestUrl = requestUrl;
-        this.traceIdentifier = traceIdentifier;
-        this.topSpan = topSpan;
-        this.inProgress = true;
+    constructor() {
         this.runningSpansCount = 1;
     }
 }

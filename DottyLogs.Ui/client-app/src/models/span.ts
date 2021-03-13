@@ -1,7 +1,11 @@
+import { Type } from 'class-transformer';
+import 'reflect-metadata';
+
 export default class Span {
     spanIdentifier: string;
     requestUrl: string;
     traceIdentifier: string;
+    @Type(() => Span)
     childSpans: Span[];
     logs: string[];
     inProgress: boolean;
@@ -23,6 +27,16 @@ export default class Span {
         let count = 0;
         this.childSpans.forEach(element => {
             count += element.childrenCount + 1;
+        });
+
+        return count;
+    }
+
+    get logChildrenCount(): number {
+        let count = 0;
+        count = count + this.logs.length;
+        this.childSpans.forEach(element => {
+            count += element.logChildrenCount;
         });
 
         return count;

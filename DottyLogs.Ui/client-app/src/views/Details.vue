@@ -578,7 +578,7 @@ export default defineComponent({
       }
     });
 
-    connection.on("StopSpan", (message: StartSpan) => {
+    connection.on("StopSpanRequest", (message: StartSpan) => {
       let span = this.spanLookup[message.spanIdentifier];
       span.inProgress = false;
 

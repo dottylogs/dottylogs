@@ -12,6 +12,7 @@ namespace DottyLogs
         {
             services.AddGrpc();
             services.AddSignalR();
+            services.AddControllers().AddApplicationPart(typeof(ServerExtensions).Assembly);
 
             return services;
         }
@@ -20,6 +21,7 @@ namespace DottyLogs
         {
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapGrpcService<DottyLogsUpdateService>();
                 endpoints.MapHub<UiUpdateHub>("/ui-updates");
             });

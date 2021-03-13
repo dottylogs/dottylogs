@@ -7,6 +7,7 @@ namespace DottyLogs.Server.DbModels
     {
         public DbSet<DottyTrace> Traces { get; set; }
         public DbSet<DottySpan> Spans { get; set; }
+        public DbSet<DottyLogLine> Logs { get; set; }
     }
 
 }

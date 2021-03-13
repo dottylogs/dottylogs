@@ -24,7 +24,7 @@ namespace DottyLogs.Server.Services
             _uiUpdateHub = uiUpdateHub;
             _dbContext = dbContext;
         }
-
+         
         public override async Task<Empty> StartSpan(StartSpanRequest request, ServerCallContext context)
         {
             await _uiUpdateHub.Clients.All.SendAsync("StartSpan", request);
@@ -134,11 +134,13 @@ namespace DottyLogs.Server.Services
         {
             _logger.LogInformation($"Got log update: {request.Message}, {request.SpanIdentifier}");
 
-            var trace = await _dbContext.Spans.SingleOrDefaultAsync(t => t.SpanIdentifier == request.SpanIdentifier);
-            trace.Logs.Add(new DottyLogLine { Message = request.Message, DateTimeUtc = DateTime.UtcNow });
+            var span = await _dbContext.Spans.SingleOrDefaultAsync(t => t.SpanIdentifier == request.SpanIdentifier);
+            var logLine = new DottyLogLine { Message = request.Message, DateTimeUtc = DateTime.UtcNow, TraceIdentifier = span.TraceIdentifier, SpanIdentifier = span.SpanIdentifier };
+            
+            span.Logs.Add(logLine);
             await _dbContext.SaveChangesAsync();
 
-            await _uiUpdateHub.Clients.All.SendAsync("LogMessage", request);
+            await _uiUpdateHub.Clients.All.SendAsync("LogMessage", logLine);
             return new Empty();
         }
 
