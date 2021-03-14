@@ -30,7 +30,9 @@ jobs:
             dottylogs/dottylogs
             ghcr.io/dottylogs/dottylogs
           # add release tag
-          tag-semver: {{raw}}
+          tag-semver: |
+            {{raw}}
+          tag-latest: true
       -
         name: Build and push
         uses: docker/build-push-action@v2
