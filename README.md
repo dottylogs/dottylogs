@@ -13,3 +13,45 @@ A better log viewer for humans
 <p align="center">
   <img alt="gif" src="https://raw.githubusercontent.com/dottylogs/dottylogs/master/docs/dottyweek1.gif">
 </p>
+
+Warning
+=======
+
+This project is only at proof of conc
+
+Features
+========
+
+* Instant realtime log viewing
+* History of traces
+* Insight into parallel flow of services and microservices
+* Easy integration into ASP.NET Core applications (and Generic Host too)
+
+Roadmap
+=======
+
+* Full diagnosis on traces
+* Integration with tracing libraries
+* Other languages
+
+Get started
+===========
+
+The easiest way is the use the DottyLogs server docker image. That's available here: https://github.com/orgs/dottylogs/packages
+´docker pull ghcr.io/dottylogs/dottylogs:latest´
+
+You'll then be able to go directly to it, and start sending traces
+
+Build and run
+=============
+
+Run the vue.js application seperately:
+cd DottyLogs.Ui/client-app/
+npm run start
+
+You can then run the rest together with the example application with Project Type:
+type run --watch
+
+License
+=======
+DottyLogs is under the MIT license. See the [LICENSE](https://github.com/dottylogs/dottylogs/blob/develop/LICENSE.md) for more information.
