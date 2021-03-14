@@ -17,7 +17,7 @@ A better log viewer for humans
 Warning
 =======
 
-This project is only at proof of conc
+This project is only at proof of concept stage. Please feel free to run it, but it will lose your data every time.
 
 Features
 ========
