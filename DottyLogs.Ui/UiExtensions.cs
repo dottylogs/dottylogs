@@ -9,7 +9,7 @@ namespace DottyLogs
     {
         public static IServiceCollection AddDottyUi(this IServiceCollection services)
         {
-            services.AddSpaStaticFiles(c => c.RootPath = "/");
+            services.AddSpaStaticFiles(c => c.RootPath = "dist");
 
             return services;
         }

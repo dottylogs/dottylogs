@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -8,5 +8,18 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.3" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
   </ItemGroup>
+
+  <!--<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="npm install" WorkingDirectory="$(ProjectDir)client-app" />
+    <Exec Command="npm run build" WorkingDirectory="$(ProjectDir)client-app" />
+  </Target>
+
+  <ItemGroup>
+    <Content Remove="client-app\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="dist\**" CopyToPublishDirectory="PreserveNewest"/>
+  </ItemGroup>-->
 
 </Project>
