@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="480"
+   height="480"
+   viewBox="0 0 127 127"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"
+   sodipodi:docname="drawing.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="261.12755"
+     inkscape:cy="136.46031"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     units="px"
+     scale-x="1"
+     inkscape:window-width="1346"
+     inkscape:window-height="1198"
+     inkscape:window-x="589"
+     inkscape:window-y="82"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:#124e78;fill-opacity:1;fill-rule:evenodd;stroke-width:0.92452"
+       id="path18"
+       cx="63.500004"
+       cy="61.421131"
+       r="57.452381" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:91.0957px;line-height:1.25;font-family:Gadugi;-inkscape-font-specification:Gadugi;fill:#f0f0c9;fill-opacity:1;stroke:none;stroke-width:0.474457"
+       x="7.6125631"
+       y="92.293419"
+       id="text887"
+       transform="scale(0.98509152,1.0151341)"><tspan
+         sodipodi:role="line"
+         id="tspan885"
+         x="7.6125631"
+         y="92.293419"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:91.0957px;font-family:Gadugi;-inkscape-font-specification:Gadugi;fill:#f0f0c9;fill-opacity:1;stroke-width:0.474457">DL</tspan></text>
+  </g>
+</svg>
