@@ -3,7 +3,7 @@
     <img src=https://github.com/dottylogs/dottylogs/raw/master/docs/icon.png alt="DottyLogs" width=35>
   </a>
   &nbsp;dottylogs&nbsp;
-  <a href="https://github.com/dottylogs/dottylogs/releases"><img src=https://img.shields.io/github/release/dottylogs/dottylogs.svg?colorB=58839b></a>
+  <a href="https://github.com/dottylogs/dottylogs/releases"><img src=https://img.shields.io/github/v/release/dottylogs/dottylogs></a>
   <a href="https://github.com/dottylogs/dottylogs/blob/master/LICENSE"><img src=https://img.shields.io/github/license/dottylogs/dottylogs.svg?colorB=ff0000></a>
 </h1>
 
