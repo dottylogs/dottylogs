@@ -3,6 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <OutputType>Library</OutputType>
+    <PackageId>DottyLogs.Client</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>Stephen Brown</Authors>
+    <Company>DottyLogs</Company>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
