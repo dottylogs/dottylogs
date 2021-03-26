@@ -17,12 +17,15 @@ namespace DottyLogs
             var config = new DottyLogLoggerConfiguration();
             configure(config);
 
+            builder.Configure(configure);
+            builder.Configure<DottyLogLoggerConfiguration>(o => o.DottyAddress = config.DottyAddress);
+
             return builder.AddDottyRequestTracing(config);
         }
 
-        public static IServiceCollection AddDottyRequestTracing(this IServiceCollection services, DottyLogLoggerConfiguration config)
+        private static IServiceCollection AddDottyRequestTracing(this IServiceCollection services, DottyLogLoggerConfiguration config)
         {
-            services.AddHostedService<MetricsAndHeartbeatBackgroundService>();
+            services.AddHostedService(c => new MetricsAndHeartbeatBackgroundService(c.GetRequiredService<ILogger< MetricsAndHeartbeatBackgroundService>>(), config));
 
             var sink = new DottyLogSink(config);
 
@@ -56,28 +59,5 @@ namespace DottyLogs
             builder.AddHttpMessageHandler<DottyHeaderMessageHandler>();
             return builder;
         }
-
-        //public static ILoggingBuilder AddDottyLogRequestTracer(
-        //this ILoggingBuilder builder) =>
-        //builder.AddDottyLogRequestTracer(
-        //    new DottyLogLoggerConfiguration());
-
-        //public static ILoggingBuilder AddDottyLogRequestTracer(
-        //    this ILoggingBuilder builder,
-        //    Action<DottyLogLoggerConfiguration> configure)
-        //{
-        //    var config = new DottyLogLoggerConfiguration();
-        //    configure(config);
-
-        //    return builder.AddDottyLogRequestTracer(config);
-        //}
-
-        //public static ILoggingBuilder AddDottyLogRequestTracer(
-        //    this ILoggingBuilder builder,
-        //    DottyLogLoggerConfiguration config)
-        //{
-        //    builder.AddProvider(new DottyLogLoggerProvider(config));
-        //    return builder;
-        //}
     }
 }

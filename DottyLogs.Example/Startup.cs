@@ -28,6 +28,7 @@ namespace DottyLogs.Example
             services.AddRazorPages();
             services.AddControllers();
             var x = Configuration.GetServiceUri("dottylogs-examplebackendapi");
+
             services.AddHttpClient("backend", c => c.BaseAddress = Configuration.GetServiceUri("dottylogs-examplebackendapi")).AddDottyLog();
             services.AddDottyRequestTracing(c => c.DottyAddress = Configuration.GetServiceUri("DottyLogs"));
         }

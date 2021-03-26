@@ -1,16 +1,13 @@
 ﻿using Grpc.Core;
 using Grpc.Net.Client;
 using GrpcDottyLogs;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
-using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,10 +28,10 @@ namespace DottyLogs.Client.BackgroundServices
         private AsyncClientStreamingCall<HeartbeatRequest, Empty> _heatbeatChannel;
         private bool disposedValue;
 
-        public MetricsAndHeartbeatBackgroundService(ILogger<MetricsAndHeartbeatBackgroundService> logger, IConfiguration config)
+        public MetricsAndHeartbeatBackgroundService(ILogger<MetricsAndHeartbeatBackgroundService> logger, DottyLogLoggerConfiguration config)
         {
             _logger = logger;
-            _baseAddress = config.GetServiceUri("DottyLogs");
+            _baseAddress = config.DottyAddress;
         }
 
         public void MetricEventCallback(float cpu, float memory)
