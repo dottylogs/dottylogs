@@ -17,5 +17,5 @@ jobs:
       # Publish
       - run: |
           dotnet DottyLogs.Client --include-symbols /p:Version=${{ github.event.release.tag_name }} --output nupkgs -c Release
-          dotnet nuget push --api-key ${{NUGET_API_KEY}} "nupkgs/*.nupkg"
+          dotnet nuget push --api-key ${{ secrets.NUGET_API_KEY }} "nupkgs/*.nupkg"
         
