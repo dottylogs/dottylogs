@@ -4,6 +4,8 @@
   </a>
   &nbsp;dottylogs&nbsp;
   <a href="https://github.com/dottylogs/dottylogs/releases"><img src=https://img.shields.io/github/v/release/dottylogs/dottylogs></a>
+  <a href="https://www.nuget.org/packages/DottyLogs.Client/"><img src=https://img.shields.io/nuget/v/DottyLogs.Client></a>
+  
   <a href="https://github.com/dottylogs/dottylogs/blob/master/LICENSE"><img src=https://img.shields.io/github/license/dottylogs/dottylogs.svg?colorB=ff0000></a>
 </h1>
 
