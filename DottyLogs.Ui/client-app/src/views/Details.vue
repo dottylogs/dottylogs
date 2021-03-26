@@ -434,7 +434,7 @@
         <div
           class="mt-8 grid grid-cols-2 gap-6"
         >
-          <div class="space-y-6 lg:col-start-1 lg:col-span-2">
+          <div v-if="trace.spanData" class="space-y-6 lg:col-start-1 lg:col-span-2">
             <!-- Description list-->
             <section>
               <div class="bg-white shadow rounded">
@@ -445,7 +445,7 @@
                         Application
                       </dt>
                       <dd class="mt-1 text-sm text-gray-900">
-                        <!-- {{ trace.spanData.applicationName }} -->
+                        {{ trace.spanData.applicationName }}
                       </dd>
                     </div>
                     <div class="sm:col-span-1">
@@ -453,7 +453,7 @@
                         Hostname
                       </dt>
                       <dd class="mt-1 text-sm text-gray-900">
-                        <!-- {{ trace.spanData.hostname }} -->
+                        {{ trace.spanData.hostname }}
                       </dd>
                     </div>
                     <div class="sm:col-span-1">
